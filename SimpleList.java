@@ -46,20 +46,13 @@ public class SimpleList {
 	 * @param param the number to add to index 0
 	 */
 	public void add(int param) 
-	{
-		
+	{	
 		 // Description:
  			//move all other ints in list over so there is room.
 			//Add parameter to list at index 0
 		//	if list is full, last element falls off
-		int length = list.length;
-		int newLength = length*2;
-		
-		if (count == length)
+		if (expandArray())
 		{
-			int temp[] = new int[list.length*2];
-			System.arraycopy(list, 0, temp, 1, list.length);
-			list = temp;
 			list[0] = param;
 			count++;
 		}
@@ -100,16 +93,12 @@ public class SimpleList {
 					}
 					else
 					{
-						
 						System.arraycopy(list, indexPosition+1, list, indexPosition, list.length - 1 - indexPosition);
 						count--;
 						return;
-					}
-					
+					}		
 				}
 			}
-			
-			
 		}
 		else 
 		{
@@ -171,6 +160,86 @@ public class SimpleList {
 		}
 		//if not found
 		return -1;
+	}
+	
+	public void append(int itemToAdd)
+	{
+		if (expandArray())
+		{
+			
+			list[count] = itemToAdd;
+			count++;
+		}
+		else
+		{
+			list[count] = itemToAdd;
+			count++;
+		}
+	}
+	
+	/**
+	 * Check to see if the array is full, if it is then expand it by 50%
+	 * This is to reduce code reuse, and make for a cleaner, and easier 
+	 * to understand finished product. 
+	 * @return boolean on if the array was full or not
+	 */
+	public boolean expandArray()
+	{
+		int arrayLength = list.length;
+		if (count == arrayLength && arrayLength > 0)
+		{
+			int temp[] = new int[arrayLength*2];
+			System.arraycopy(list, 0, temp, 0, arrayLength);
+			list = temp;
+			return true;
+		}
+		else
+		{
+			return false;
+		}		
+	}
+	
+	/**
+	 * return first element of Array
+	 * @return first element if it exists, or -1 if array is empty. 
+	 */
+	public int first()
+	{
+		if (count > 0)
+		{
+			return list[0];
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	
+	/**
+	 * return last element of Array
+	 * @return last element if it exists, or -1 if array is empty. 
+	 */
+	public int last()
+	{
+		if (count > 0)
+		{
+			return list[count-1];
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	
+	/**
+	 * return size of unused portion of the array
+	 * @return size of unused space.  
+	 */
+	public int size()
+	{
+		int length = list.length;
+		int emptySpace = (length - count);
+		return emptySpace;
 	}
 	
 	/**
