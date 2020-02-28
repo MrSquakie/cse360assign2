@@ -52,12 +52,21 @@ public class SimpleList {
  			//move all other ints in list over so there is room.
 			//Add parameter to list at index 0
 		//	if list is full, last element falls off
-		 
-		System.arraycopy(list, 0, list, 1, list.length-1); //move the array down 1
-		list[0] = param;
-		if (count == 10);
+		int length = list.length;
+		int newLength = length*2;
+		
+		if (count == length)
+		{
+			int temp[] = new int[list.length*2];
+			System.arraycopy(list, 0, temp, 1, list.length);
+			list = temp;
+			list[0] = param;
+			count++;
+		}
 		else
 		{
+			System.arraycopy(list, 0, list, 1, list.length-1); //move the array down 1
+			list[0] = param;
 			count++;
 		}
 	}
@@ -76,11 +85,31 @@ public class SimpleList {
 			{
 				if (list[indexPosition] == param)
 				{
-					System.arraycopy(list, indexPosition+1, list, indexPosition, list.length - 1 - indexPosition);
-					count--;
-					return;
+					int length = list.length;
+					int emptySpace = (length - count);
+					float emptyPercent = (float)(emptySpace/(float)length);
+					if (emptyPercent > 0.25 && list.length > 0) 
+					{
+						System.arraycopy(list, indexPosition+1, list, indexPosition, count - 1 - indexPosition);
+						count --;
+						//Resize array now
+						int temp[] = new int[count];
+						System.arraycopy(list, 0, temp, 0, temp.length);
+						list = temp;
+						return;
+					}
+					else
+					{
+						
+						System.arraycopy(list, indexPosition+1, list, indexPosition, list.length - 1 - indexPosition);
+						count--;
+						return;
+					}
+					
 				}
 			}
+			
+			
 		}
 		else 
 		{
